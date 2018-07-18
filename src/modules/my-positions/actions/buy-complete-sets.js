@@ -1,12 +1,10 @@
-// Currently a copy of sell-complete-sets.js
-
 import { augur } from 'services/augurjs'
 import { createBigNumber } from 'utils/create-big-number'
 import { loadAccountTrades } from 'modules/my-positions/actions/load-account-trades'
 import logError from 'utils/log-error'
 import noop from 'utils/noop'
 
-export function sellCompleteSets(marketId, numCompleteSets, callback = logError) {
+export function buyCompleteSets(marketId, numCompleteSets, callback = logError) {
   return (dispatch, getState) => {
     const {
       loginAccount,
@@ -19,7 +17,7 @@ export function sellCompleteSets(marketId, numCompleteSets, callback = logError)
       minPrice,
     } = marketsData[marketId]
     const numCompleteSetsOnChain = augur.utils.convertDisplayAmountToOnChainAmount(createBigNumber(numCompleteSets.fullPrecision), createBigNumber(maxPrice - minPrice), numTicks)
-    const sellCompleteSetsParams = {
+    const buyCompleteSetsParams = {
       tx: {},
       meta: loginAccount.meta,
       _market: marketId,
@@ -30,6 +28,6 @@ export function sellCompleteSets(marketId, numCompleteSets, callback = logError)
       },
       onFailed: err => callback(err),
     }
-    augur.api.CompleteSets.publicSellCompleteSets(sellCompleteSetsParams)
+    augur.api.CompleteSets.publicBuyCompleteSets(buyCompleteSetsParams)
   }
 }
